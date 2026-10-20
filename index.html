@@ -1025,7 +1025,15 @@ if(!reduce && window.Lenis){
 }
 addEventListener('scroll',onScroll,{passive:true});
 $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-  const el=$(a.getAttribute('href')); if(!el) return; e.preventDefault(); if(nav.classList.contains('open')) setMenu(false);
+  const el=$(a.getAttribute('href')); if(!el) return; e.preventDefault();
+  const fromMenu=nav.classList.contains('open');
+  if(fromMenu){
+    // from the phone menu: jump straight to the section, no scrolling animation
+    setMenu(false);
+    const y=el.id==='top'?0:Math.max(0,el.getBoundingClientRect().top+scrollY-70);
+    if(lenis) lenis.scrollTo(y,{immediate:true,force:true}); else window.scrollTo({top:y,behavior:'instant'});
+    onScroll(); return;
+  }
   if(lenis) lenis.scrollTo(el.id==='top'?0:el,{offset:-70}); else el.scrollIntoView({behavior:reduce?'auto':'smooth'});
 }));
 totop.addEventListener('click',()=>lenis?lenis.scrollTo(0):scrollTo({top:0,behavior:'smooth'}));
