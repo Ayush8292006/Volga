@@ -4,8 +4,6 @@
 //   GMAIL_APP_PASSWORD  16-letter Google "App password" (not the normal Gmail password)
 //   TO_EMAIL            where enquiries should arrive         e.g. volgalifebiosciences@gmail.com
 //   CC_EMAIL            (optional) second inbox for a copy
-
-
 const nodemailer = require('nodemailer');
 
 const ALLOWED = ['https://volgalife.com', 'https://www.volgalife.com', 'https://volga-mu.vercel.app', 'http://localhost:3000'];
@@ -74,6 +72,15 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
   if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method === 'GET') { // settings check: open /api/send in the browser
+    const mask = e => e ? e.replace(/^(.{3}).*(.{2}@.*)$/, '$1*****$2') : 'NOT SET';
+    return res.status(200).json({
+      sender_GMAIL_USER: mask(process.env.GMAIL_USER),
+      receiver_TO_EMAIL: process.env.TO_EMAIL ? mask(process.env.TO_EMAIL) : 'NOT SET (falls back to GMAIL_USER)',
+      app_password_set: !!process.env.GMAIL_APP_PASSWORD,
+      cc: process.env.CC_EMAIL ? mask(process.env.CC_EMAIL) : 'none',
+    });
+  }
   if (req.method !== 'POST') return res.status(405).json({ success: false, message: 'Method not allowed' });
 
   try {
