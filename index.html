@@ -1003,10 +1003,7 @@ form.enq .sent{font-size:14px;padding:12px 14px;border:1px solid currentColor;ba
         <h2>Have a question or a business enquiry?</h2>
         <p class="sub">Distributors, retailers and partners are welcome. Tell us what you are working on and our team will reply within two working days.</p>
         <form class="enq" id="enq" novalidate>
-          <!-- Web3Forms access key (form: Volga). Recipient email is set in the Web3Forms dashboard. -->
-          <input type="hidden" name="access_key" value="84c530cc-a338-46a9-a7e8-a89ca846d686">
-          <input type="hidden" name="subject" value="New enquiry from volgalife website">
-          <input type="hidden" name="from_name" value="Volga Life Biosciences">
+          <!-- Sent by Nodemailer via the Vercel function /api/send (see api/send.js) -->
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="enq-head full"><span class="enq-dot"></span><b>Send an enquiry</b><span class="enq-meta">Reply within 2 working days</span></div>
           <label class="fx" for="f-name"><span class="fx-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span><input id="f-name" name="name" type="text" placeholder=" " required autocomplete="name"><span class="fx-l">Your name</span></label>
@@ -1237,15 +1234,19 @@ $$('.copy').forEach(b=>b.addEventListener('click',()=>{
   const sel=()=>{const v=b.previousElementSibling.querySelector('.v');const r=document.createRange();r.selectNodeContents(v);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'};
   try{navigator.clipboard.writeText(b.dataset.copy).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1600)},sel)}catch(_){sel()}
 }));
+/* Enquiry API (Nodemailer on Vercel). On the Vercel site it uses its own /api/send;
+   on volgalife.com (MilesWeb) it calls the Vercel project. Change the URL if your Vercel project name changes. */
+const ENQUIRY_API = /vercel\.app$/.test(location.hostname) ? '/api/send' : 'https://volga-mu.vercel.app/api/send';
 $$('[data-enq]').forEach(a=>a.addEventListener('click',()=>{const r=document.querySelector('input[name="Interested in"][value="'+a.dataset.enq+'"]');if(r)r.checked=true;}));
 $('#enq').addEventListener('submit',async e=>{
   e.preventDefault(); const f=e.currentTarget, msg=$('#sent'), btn=$('#f-btn'), lbl=btn.querySelector('span');
   const say=(t,ok)=>{msg.textContent=t;msg.style.color=ok?'var(--leaf)':'var(--gold-hi)';msg.hidden=false};
   if(!f.checkValidity()){ f.classList.add('tried'); say('Please fill in your name, a valid email and mobile number.',false); f.reportValidity(); return; }
   btn.disabled=true; lbl.textContent='Sending…';
-  const fd=new FormData(f); fd.set('subject','New enquiry: '+(fd.get('Interested in')||'General')+' | '+(fd.get('name')||'').trim()+' | volgalife.com');
+  const fd=new FormData(f);
+  const payload={name:fd.get('name'),phone:fd.get('Mobile number'),email:fd.get('email'),interest:fd.get('Interested in'),message:fd.get('Message'),botcheck:fd.get('botcheck')?'1':''};
   try{
-    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{Accept:'application/json'},body:fd});
+    const res=await fetch(ENQUIRY_API,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});
     const j=await res.json();
     if(j.success){ say('Thank you! Your enquiry has been sent. Our team will get back to you soon.',true); f.reset(); }
     else throw new Error(j.message);
