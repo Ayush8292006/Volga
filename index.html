@@ -678,6 +678,46 @@ footer nav a:hover{color:var(--gold-hi)}
 .nav a span{white-space:nowrap}.hdr .btn{white-space:nowrap}
 @media (min-width:1001px) and (max-width:1320px){.nav{gap:20px;font-size:10.5px;letter-spacing:.12em}.hdr .wrap{gap:18px}}
 @media (min-width:1001px) and (max-width:1180px){.hdr .btn{display:none}}
+
+/* enquiry form v2 */
+form.enq{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:26px;border:1px solid var(--line-2);background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(4,13,28,.35));position:relative}
+form.enq::before{content:"";position:absolute;left:0;top:0;width:60px;height:2px;background:var(--gold)}
+.enq-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.enq-head b{font-family:var(--f-display);font-weight:500;font-size:19px}
+.enq-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.enq-meta{margin-left:auto;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fx{position:relative;display:block}
+.fx-ic{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);display:grid;transition:color .3s;pointer-events:none}
+form.enq .fx input{height:58px;padding:22px 14px 8px 44px;background:rgba(4,13,28,.55);border:1px solid var(--line-2);font-size:15px}
+form.enq .fx textarea{display:block;width:100%;min-height:104px;padding:28px 14px 12px;background:rgba(4,13,28,.55);border:1px solid var(--line-2);color:var(--fg);font:inherit;font-size:15px;outline:none;border-radius:0;resize:vertical;transition:border-color .3s,box-shadow .3s}
+.fx-l{position:absolute;left:44px;top:50%;transform:translateY(-50%);font-size:14.5px;color:var(--muted);pointer-events:none;transition:all .25s var(--ease)}
+.fx-ta .fx-l{left:14px;top:22px}
+.fx input:focus~.fx-l,.fx input:not(:placeholder-shown)~.fx-l,.fx textarea:focus~.fx-l,.fx textarea:not(:placeholder-shown)~.fx-l{top:15px;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-hi)}
+.fx-ta textarea:focus~.fx-l,.fx-ta textarea:not(:placeholder-shown)~.fx-l{top:11px;transform:none}
+.fx-ta .fx-l{transform:none}
+form.enq .fx input:focus,form.enq .fx textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,90,44,.14);background:rgba(4,13,28,.75)}
+.fx:focus-within .fx-ic{color:var(--gold)}
+form.enq.tried .fx input:invalid{border-color:#ff7a7a}
+.enq-types{border:0;margin:4px 0 0;padding:0;min-width:0}
+.enq-types legend{padding:0;margin-bottom:10px;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px}
+.chip-r{position:relative;cursor:pointer}
+.chip-r input{position:absolute;opacity:0;pointer-events:none}
+.chip-r span{display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:9px 14px;border:1px solid var(--line-2);border-radius:99px;color:#c8d3d3;background:rgba(4,13,28,.45);transition:all .3s var(--ease)}
+.chip-r span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--line-2);transition:background .3s,box-shadow .3s}
+.chip-r:hover span{border-color:rgba(255,90,44,.45);color:var(--fg)}
+.chip-r input:checked+span{border-color:var(--gold);color:var(--gold-hi);background:rgba(255,90,44,.1)}
+.chip-r input:checked+span::before{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.chip-r input:focus-visible+span{outline:2px solid var(--gold-hi);outline-offset:2px}
+.enq-btn{height:56px;margin-top:4px}
+.enq-note{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.enq-note svg{flex:none;color:var(--gold)}
+form.enq .sent{font-size:14px;padding:12px 14px;border:1px solid currentColor;background:rgba(255,255,255,.02)}
+@media (max-width:560px){
+  form.enq{grid-template-columns:1fr;padding:20px 16px}
+  .enq-meta{display:none}
+  .chip-r span{font-size:12.5px;padding:8px 12px}
+}
 </style>
 
 </head>
@@ -963,18 +1003,20 @@ footer nav a:hover{color:var(--gold-hi)}
         <h2>Have a question or a business enquiry?</h2>
         <p class="sub">Distributors, retailers and partners are welcome. Tell us what you are working on and our team will reply within two working days.</p>
         <form class="enq" id="enq" novalidate>
-          <!-- Web3Forms: paste the Access Key that arrives on volgalifebiosciences@gmail.com in the value below -->
-          <input type="hidden" name="access_key" value="PASTE-WEB3FORMS-ACCESS-KEY-HERE">
+          <!-- Web3Forms access key (form: Volga). Recipient email is set in the Web3Forms dashboard. -->
+          <input type="hidden" name="access_key" value="84c530cc-a338-46a9-a7e8-a89ca846d686">
           <input type="hidden" name="subject" value="New enquiry from volgalife website">
-          <input type="hidden" name="from_name" value="Volga Life Website">
+          <input type="hidden" name="from_name" value="Volga Life Biosciences">
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <input id="f-name" name="name" placeholder="Your name" required aria-label="Your name" autocomplete="name">
-          <input id="f-phone" name="phone" type="tel" placeholder="Mobile number" required aria-label="Mobile number" autocomplete="tel" inputmode="tel">
-          <input id="f-mail" name="email" type="email" placeholder="Email" required aria-label="Email" class="full" autocomplete="email">
-          <select id="f-type" name="enquiry_type" class="full" aria-label="Enquiry type"><option>Business partnership</option><option>Dropship fulfilment</option><option>Retail / distribution</option><option>Product question</option><option>Careers</option></select>
-          <textarea id="f-msg" name="message" class="full" rows="3" placeholder="Your message (optional)" aria-label="Your message"></textarea>
-          <button class="btn btn--gold full" type="submit" id="f-btn"><span>Send enquiry</span> <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.3"/></svg></button>
-          <p class="sent" id="sent" hidden role="status"></p>
+          <div class="enq-head full"><span class="enq-dot"></span><b>Send an enquiry</b><span class="enq-meta">Reply within 2 working days</span></div>
+          <label class="fx" for="f-name"><span class="fx-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span><input id="f-name" name="name" type="text" placeholder=" " required autocomplete="name"><span class="fx-l">Your name</span></label>
+          <label class="fx" for="f-phone"><span class="fx-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 006 6L16 13l5 2v4a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/></svg></span><input id="f-phone" name="Mobile number" type="tel" placeholder=" " required autocomplete="tel" inputmode="tel"><span class="fx-l">Mobile number</span></label>
+          <label class="fx full" for="f-mail"><span class="fx-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="4" width="20" height="16" rx="1"/><path d="M2 5l10 8 10-8"/></svg></span><input id="f-mail" name="email" type="email" placeholder=" " required autocomplete="email"><span class="fx-l">Email address</span></label>
+          <fieldset class="full enq-types"><legend>I&rsquo;m interested in</legend><div class="chips-r" id="f-type"><label class="chip-r"><input type="radio" name="Interested in" value="Business partnership" checked><span>Business partnership</span></label><label class="chip-r"><input type="radio" name="Interested in" value="Dropship fulfilment"><span>Dropship fulfilment</span></label><label class="chip-r"><input type="radio" name="Interested in" value="Retail / distribution"><span>Retail / distribution</span></label><label class="chip-r"><input type="radio" name="Interested in" value="Product question"><span>Product question</span></label><label class="chip-r"><input type="radio" name="Interested in" value="Careers"><span>Careers</span></label></div></fieldset>
+          <label class="fx fx-ta full" for="f-msg"><textarea id="f-msg" name="Message" rows="3" placeholder=" "></textarea><span class="fx-l">Your message (optional)</span></label>
+          <button class="btn btn--gold full enq-btn" type="submit" id="f-btn"><span>Send enquiry</span> <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.3"/></svg></button>
+          <p class="enq-note full"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="1.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Your details stay private and are only used to reply to you.</p>
+          <p class="sent full" id="sent" hidden role="status"></p>
         </form>
       </div>
       <div class="clist">
@@ -1195,14 +1237,15 @@ $$('.copy').forEach(b=>b.addEventListener('click',()=>{
   const sel=()=>{const v=b.previousElementSibling.querySelector('.v');const r=document.createRange();r.selectNodeContents(v);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'};
   try{navigator.clipboard.writeText(b.dataset.copy).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1600)},sel)}catch(_){sel()}
 }));
-$$('[data-enq]').forEach(a=>a.addEventListener('click',()=>{const sel=$('#f-type');if(sel)sel.value=a.dataset.enq;}));
+$$('[data-enq]').forEach(a=>a.addEventListener('click',()=>{const r=document.querySelector('input[name="Interested in"][value="'+a.dataset.enq+'"]');if(r)r.checked=true;}));
 $('#enq').addEventListener('submit',async e=>{
   e.preventDefault(); const f=e.currentTarget, msg=$('#sent'), btn=$('#f-btn'), lbl=btn.querySelector('span');
   const say=(t,ok)=>{msg.textContent=t;msg.style.color=ok?'var(--leaf)':'var(--gold-hi)';msg.hidden=false};
-  if(!f.checkValidity()){ say('Please fill in your name, a valid email and mobile number.',false); f.reportValidity(); return; }
+  if(!f.checkValidity()){ f.classList.add('tried'); say('Please fill in your name, a valid email and mobile number.',false); f.reportValidity(); return; }
   btn.disabled=true; lbl.textContent='Sending…';
+  const fd=new FormData(f); fd.set('subject','New enquiry: '+(fd.get('Interested in')||'General')+' | '+(fd.get('name')||'').trim()+' | volgalife.com');
   try{
-    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{Accept:'application/json'},body:new FormData(f)});
+    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{Accept:'application/json'},body:fd});
     const j=await res.json();
     if(j.success){ say('Thank you! Your enquiry has been sent. Our team will get back to you soon.',true); f.reset(); }
     else throw new Error(j.message);
